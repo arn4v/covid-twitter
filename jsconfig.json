@@ -3,8 +3,8 @@
     "checkJs": true,
     "baseUrl": ".",
     "paths": { "~/*": ["src/*"] },
-    "resolveJsonModule": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "resolveJsonModule": true
   },
   "include": ["src", "api"]
 }
