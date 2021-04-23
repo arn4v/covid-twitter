@@ -112,7 +112,7 @@ const fetchTweets = async () => {
               retweetCount: tweet.public_metrics.retweet_count,
               replyCount: tweet.public_metrics.reply_count,
               postedAt: tweet.created_at,
-              tweetStatus: {
+              status: {
                 busy: 0,
                 invalid: 0,
                 working: 1,
