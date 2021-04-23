@@ -1,8 +1,13 @@
-const { Schema } = require("mongoose")
+const mongoose = require("mongoose")
 
-const citySchema = new Schema({
-  location: {
-    type: Map,
-    of: String,
+const schema = new mongoose.Schema(
+  {
+    name: String,
+    state: String,
   },
-})
+  {
+    timestamps: true,
+  }
+)
+
+module.exports = mongoose.model("City", schema)

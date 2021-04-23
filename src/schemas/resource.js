@@ -1,3 +1,13 @@
-const { Schema } = require("mongoose")
+const mongoose = require("mongoose")
 
-const resourceSchema = new Schema({})
+const schema = new mongoose.Schema(
+  {
+    name: String,
+    searchTerm: String,
+  },
+  {
+    timestamps: true,
+  }
+)
+
+module.exports = mongoose.model("City", schema)
