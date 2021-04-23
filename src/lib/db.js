@@ -1,6 +1,5 @@
 const uuid = require("uuid")
 const { connectToDatabase } = require("./mongo")
-const mongoose = require("mongoose")
 
 /**
  * @param {string} city
