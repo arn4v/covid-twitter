@@ -18,6 +18,7 @@ const TweetSchema = mongoose.Schema(
     show: { type: Boolean, default: true },
     // url: String,
     postedAt: String,
+    authorId: String,
     retweetCount: Number,
     replyCount: Number,
     status: mongoose.Schema.Types.Mixed,
@@ -93,7 +94,7 @@ const fetchTweets = async () => {
       for (resourceKey in resources) {
         url =
           baseUrl +
-          `verified ${city} (${resources[resourceKey]}) -"not verified" -"unverified" -"needed" -"required" -"urgent" -"urgentlyrequired" -"help"&max_results=${MAX_RESULTS}&tweet.fields=created_at,public_metrics`
+          `verified ${city} (${resources[resourceKey]}) -"not verified" -"unverified" -"needed" -"required" -"urgent" -"urgentlyrequired" -"help"&max_results=${MAX_RESULTS}&tweet.fields=created_at,public_metrics&expansions=author_id`
         console.log(url)
         const response = await fetch(url, {
           method: "GET",
@@ -107,7 +108,7 @@ const fetchTweets = async () => {
           for (tweet of resJson.data) {
             const tweetObj = {
               id: tweet.id,
-              text: tweet.text,
+              authorId: tweet.author_id,
               retweetCount: tweet.public_metrics.retweet_count,
               replyCount: tweet.public_metrics.reply_count,
               postedAt: tweet.created_at,
