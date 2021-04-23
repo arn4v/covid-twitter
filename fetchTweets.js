@@ -16,7 +16,7 @@ const TweetSchema = mongoose.Schema(
   {
     id: String,
     show: { type: Boolean, default: true },
-    // url: String,
+    url: String,
     postedAt: String,
     authorId: String,
     retweetCount: Number,
@@ -81,13 +81,15 @@ const resources = {
 const MAX_RESULTS = 10
 const NUM_CYCLES = 1
 
-const fetchTweets = async () => {
+const fetchTweets = async (newestID = null) => {
   //Ref URL:
   //https://api.twitter.com/2/tweets/search/recent?query=verified mumbai (bed OR beds OR icu OR oxygen OR ventilator OR ventilators OR fabiflu OR remdesivir OR favipiravir OR tocilizumab OR plasma OR tiffin) -"not verified" -"unverified" -"needed" -"required" -"urgent" -"urgentlyrequired" -"help"&max_results=10&tweet.fields=created_at
-  baseUrl = `https://api.twitter.com/2/tweets/search/recent?query=`
 
-  //Clean Database
-  // Tweet.deleteMany({}, (err) => (err ? err : {}));
+  baseUrl = newestID
+    ? `https://api.twitter.com/2/tweets/search/recent?since_id=${newestID}&query=`
+    : `https://api.twitter.com/2/tweets/search/recent?query=`
+
+  let fetchedTweets = 0
 
   for (let i = 0; i < NUM_CYCLES; i++) {
     for (city in cities) {
@@ -95,7 +97,11 @@ const fetchTweets = async () => {
         url =
           baseUrl +
           `verified ${city} (${resources[resourceKey]}) -"not verified" -"unverified" -"needed" -"required" -"urgent" -"urgentlyrequired" -"help"&max_results=${MAX_RESULTS}&tweet.fields=created_at,public_metrics&expansions=author_id`
-        console.log(url)
+        console.log("======")
+        console.log("Newest ID:", newestID)
+        console.log("Total Fetched Tweets:", fetchedTweets)
+        console.log("Fetching:", url)
+        console.log("======")
         const response = await fetch(url, {
           method: "GET",
           headers: {
@@ -109,6 +115,7 @@ const fetchTweets = async () => {
             const tweetObj = {
               id: tweet.id,
               authorId: tweet.author_id,
+              url: `https:www.twitter.com/${tweet.author_id}/status/${tweet.id}`,
               retweetCount: tweet.public_metrics.retweet_count,
               replyCount: tweet.public_metrics.reply_count,
               postedAt: tweet.created_at,
@@ -128,14 +135,21 @@ const fetchTweets = async () => {
             newTweet.save((err) => {
               if (err) console.log(err)
               console.log("Tweet Saved!")
+              fetchedTweets++
             })
           }
+          newestID = resJson.meta.newest_id
         } catch (error) {
           console.log("Error!", error)
+
+          if (resJson.meta.result_count === 0) {
+            baseUrl = `https://api.twitter.com/2/tweets/search/recent?query=`
+          }
         }
       }
     }
   }
+  return { newestId, fetchedTweets }
 }
 
 fetchTweets()
