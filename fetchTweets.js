@@ -140,11 +140,8 @@ const fetchTweets = async (newestID = null) => {
           }
           newestID = resJson.meta.newest_id
         } catch (error) {
-          console.log("Error!", error)
-
-          if (resJson.meta.result_count === 0) {
-            baseUrl = `https://api.twitter.com/2/tweets/search/recent?query=`
-          }
+          console.log(`\n===Error!===\n${error}\n`)
+          console.log("Response:", resJson)
         }
       }
     }
