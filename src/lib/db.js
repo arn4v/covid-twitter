@@ -17,37 +17,14 @@ module.exports.addCity = async (city) => {
 /**
  * @param {string} tweetId
  */
-
-module.exports.statusBuzy = async (tweetId) => {
-  const db = await connectToDatabase()
-  
-  TweetModel.findOneAndUpdate({
-    id: tweetId
-  }, {
-    $inc: {
-      "status.buzy": 1
-    }
-  },
-  function(err, response) {
-    if (err) {
-      return err;
-    } else {
-      return response;
-    }
-  });
-}
-
-/**
- * @param {string} tweetId
- */
-module.exports.statusInvalid = async (tweetId) => {
+module.exports.statusUpvote = async (tweetId) => {
     const db = await connectToDatabase()
     
     TweetModel.findOneAndUpdate({
       id: tweetId
     }, {
       $inc: {
-        "status.invalid": 1
+        "status": 1
       }
     },
     function(err, response) {
@@ -61,14 +38,14 @@ module.exports.statusInvalid = async (tweetId) => {
 /**
  * @param {string} tweetId
  */
-module.exports.statusWorking = async (tweetId) => {
+module.exports.statusDownvote = async (tweetId) => {
       const db = await connectToDatabase()
       
       TweetModel.findOneAndUpdate({
         id: tweetId
       }, {
         $inc: {
-          "status.working": 1
+          "status": -1
         }
       },
       function(err, response) {
