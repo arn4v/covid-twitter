@@ -101,78 +101,71 @@ const TweetsList = React.memo(({ data }) => {
     return allowVote
   }
 
-  const handleVote = (id, flag) => {
-    const allowVote = checkVoteAllowed(id, flag)
+  const handleVote = (tweetId, flag) => {
+    const allowVote = checkVoteAllowed(tweetId, flag)
+
     if (!allowVote) {
       return
     }
 
     const config = {
       method: "post",
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ tweetId }),
     }
 
     if (flag < 0) {
       fetch("/api/downvote", config)
         .then((res) => {
           if (!res.ok) throw Error(res.statusText)
+          updateVotedTweets(tweetId, flag)
           return res.json()
         })
         .then((data) => console.log({ data }))
         .catch((err) => console.log(err))
-        .finally(() => {
-          updateVotedTweets(id, flag)
-        })
     } else {
       fetch("/api/upvote", config)
         .then((res) => {
           if (!res.ok) throw Error(res.statusText)
+          updateVotedTweets(tweetId, flag)
           return res.json()
         })
         .then((data) => console.log({ data }))
         .catch((err) => console.log(err))
-        .finally(() => {
-          updateVotedTweets(id, flag)
-        })
     }
   }
 
   return data.length > 0 ? (
-    <>
-      {data
-        .sort((a, b) => {
-          return -a.postedAt.localeCompare(b.postedAt)
-        })
-        .slice(0, limit + 1)
-        .map(({ id: tweetId, url: tweetUrl, status: voteCount }) => {
-          return (
-            <div
-              key={tweetId}
-              className="w-full flex flex-col items-center justify-center space-y-4 my-8 px-2"
-            >
-              <Tweet id={tweetId} />
-              <div className="w-full sm:w-1/2 lg:w-2/5 xl:w-1/3 px-4 sm:px-0 flex justify-between">
-                <div className="flex justify-between space-x-8">
-                  <div
-                    className="text-green-500 text-xs text-center hover:cursor-pointer"
-                    onClick={() => handleVote(tweetId, 1)}
-                  >
-                    <div className="flex items-center">
-                      <ThumbUpIcon className="w-8 sm" />
-                      <p className="text-sm">{voteCount > 0 ? voteCount : 0}</p>
-                    </div>
-                    <p className="text-gray-400">Working</p>
+    data
+      .sort((a, b) => {
+        return -a.postedAt.localeCompare(b.postedAt)
+      })
+      .slice(0, limit + 1)
+      .map(({ tweetId, tweetUrl, votes: voteCount }) => {
+        return (
+          <div
+            key={tweetId}
+            className="w-full flex flex-col items-center justify-center space-y-4 my-2 px-2"
+          >
+            <Tweet id={tweetId} />
+            {/* <div className="w-full sm:w-1/2 lg:w-2/5 xl:w-1/3 px-4 sm:px-0 flex justify-between">
+              <div className="flex justify-between space-x-8">
+                <div
+                  className="text-green-500 text-xs text-center hover:cursor-pointer"
+                  onClick={() => handleVote(tweetId, 1)}
+                >
+                  <div className="flex items-center">
+                    <ThumbUpIcon className="w-8 sm" />
+                    <p className="text-sm">{voteCount > 0 ? voteCount : 0}</p>
                   </div>
 
-                  <div
-                    className="text-red-500 text-xs text-center hover:cursor-pointer"
-                    onClick={() => handleVote(tweetId, -1)}
-                  >
-                    <div className="flex items-center">
-                      <ThumbDownIcon className="w-8" />
-                      <p className="text-sm">{voteCount < 0 ? voteCount : 0}</p>
-                    </div>
-                    <p className="text-gray-400">Not Working</p>
+
+                <div
+                  className="text-red-500 text-xs text-center hover:cursor-pointer"
+                  onClick={() => handleVote(tweetId, -1)}
+                >
+                  <div className="flex items-center">
+                    <ThumbDownIcon className="w-8" />
+                    <p className="text-sm">{voteCount < 0 ? voteCount : 0}</p>
                   </div>
                 </div>
                 <div>
@@ -196,19 +189,10 @@ const TweetsList = React.memo(({ data }) => {
               </div>
               <hr className="w-1/6 h-0.5 border-none bg-gray-300" />
             </div>
-          )
-        })}
-      {limit + 20 < data.length && (
-        <button
-          onClick={showMore}
-          className="bg-indigo-200 text-indigo-700 flex items-center justify-center px-4 py-2 rounded-md gap-2 shadow-md"
-          disabled={limit + 20 > data.length}
-        >
-          <HiChevronDoubleDown />
-          Show more
-        </button>
-      )}
-    </>
+            <hr className="w-1/6 h-0.5 border-none bg-gray-300" /> */}
+          </div>
+        )
+      })
   ) : (
     <div className="text-center">
       No tweets found for {slug[0]} & {slug[1]}. This might be a bug, please DM
