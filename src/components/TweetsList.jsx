@@ -132,10 +132,10 @@ const TweetsList = React.memo(({ data }) => {
         return (
           <div
             key={tweetId}
-            className="w-full flex flex-col items-center justify-center space-y-4 my-8 px-2"
+            className="w-full flex flex-col items-center justify-center space-y-4 my-2 px-2"
           >
             <Tweet id={tweetId} />
-            <div className="w-full sm:w-1/2 lg:w-2/5 xl:w-1/3 px-4 sm:px-0 flex justify-between">
+            {/* <div className="w-full sm:w-1/2 lg:w-2/5 xl:w-1/3 px-4 sm:px-0 flex justify-between">
               <div className="flex justify-between space-x-8">
                 <div
                   className="text-green-500 text-xs text-center hover:cursor-pointer"
@@ -179,7 +179,7 @@ const TweetsList = React.memo(({ data }) => {
                 </div>
               </div>
             </div>
-            <hr className="w-1/6 h-0.5 border-none bg-gray-300" />
+            <hr className="w-1/6 h-0.5 border-none bg-gray-300" /> */}
           </div>
         )
       })
