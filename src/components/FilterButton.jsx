@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { useRouter } from "next/router"
 import * as React from "react"
 
 /**
@@ -21,9 +22,8 @@ const FilterButton = React.forwardRef(
         href={href}
         onClick={onClick}
         className={clsx([
-          "rounded-md px-1 lg:px-4 py-0.5 flex items-center justify-center shadow-md border border-gray-200 select-none transition duration-100 ease-in-out font-medium focus:outline-none cursor-pointer",
-          active ? "bg-gray-600 text-white" : "bg-white hover:bg-gray-300",
-          className,
+          "hover:bg-gray-500 text-gray-700 font-semibold hover:text-white py-0.5 px-1 text-sm lg:text-base lg:py-2 m-1 lg:px-4 border-transparent hover:border-gray-500 rounded select-none cursor-pointer",
+          active ? "bg-gray-500 text-white" : "bg-gray-200",
         ])}
       >
         {children}

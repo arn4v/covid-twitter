@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import * as React from "react"
 import ClipboardJS from "clipboard"
 import { Tweet } from "react-static-tweets"
+import { HiChevronDoubleDown } from "react-icons/hi"
 import {
   ThumbUpIcon,
   ThumbDownIcon,
@@ -16,6 +17,15 @@ const TweetsList = React.memo(({ data }) => {
   const [shareSupported, setShareSupported] = React.useState(false)
   const router = useRouter()
   const { slug } = router.query
+  const [limit, setLimit] = React.useState(20)
+
+  const showMore = () => {
+    if (limit + 20 < data.length) {
+      setLimit((prev) => prev + 20)
+    } else if (limit + 20 > data.length && limit < data.length) {
+      setLimit((prev) => prev + (data.length - prev))
+    }
+  }
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && window.navigator?.share) {
@@ -31,8 +41,8 @@ const TweetsList = React.memo(({ data }) => {
       })
     } else {
       const clipboard = new ClipboardJS(".copy-btn", {
-        text: function (trigger) {
-          return trigger.getAttribute("data-tweet-url")
+        text: () => {
+          return link
         },
       })
 
@@ -93,6 +103,7 @@ const TweetsList = React.memo(({ data }) => {
 
   const handleVote = (tweetId, flag) => {
     const allowVote = checkVoteAllowed(tweetId, flag)
+
     if (!allowVote) {
       return
     }
@@ -128,6 +139,7 @@ const TweetsList = React.memo(({ data }) => {
       .sort((a, b) => {
         return -a.postedAt.localeCompare(b.postedAt)
       })
+      .slice(0, limit + 1)
       .map(({ tweetId, tweetUrl, votes: voteCount }) => {
         return (
           <div
@@ -145,8 +157,7 @@ const TweetsList = React.memo(({ data }) => {
                     <ThumbUpIcon className="w-8 sm" />
                     <p className="text-sm">{voteCount > 0 ? voteCount : 0}</p>
                   </div>
-                  <p className="text-gray-400">Working</p>
-                </div>
+
 
                 <div
                   className="text-red-500 text-xs text-center hover:cursor-pointer"
@@ -156,28 +167,27 @@ const TweetsList = React.memo(({ data }) => {
                     <ThumbDownIcon className="w-8" />
                     <p className="text-sm">{voteCount < 0 ? voteCount : 0}</p>
                   </div>
-                  <p className="text-gray-400">Not Working</p>
+                </div>
+                <div>
+                  <div
+                    className="text-gray-500 text-xs text-center hover:cursor-pointer copy-btn"
+                    onClick={() => handleCopyOrShare(tweetUrl)}
+                  >
+                    {shareSupported ? (
+                      <>
+                        <ShareIcon className="w-8" />
+                        <p className="text-gray-400 text-xs">Share</p>
+                      </>
+                    ) : (
+                      <>
+                        <DuplicateIcon className="w-8" />
+                        <p className="text-gray-400 text-xs">Copy Link</p>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div>
-                <div
-                  className="text-gray-500 text-xs text-center hover:cursor-pointer copy-btn"
-                  data-tweet-url={tweetUrl}
-                  onClick={() => handleCopyOrShare(tweetUrl)}
-                >
-                  {shareSupported ? (
-                    <>
-                      <ShareIcon className="w-8" />
-                      <p className="text-gray-400 text-xs">Share</p>
-                    </>
-                  ) : (
-                    <>
-                      <DuplicateIcon className="w-8" />
-                      <p className="text-gray-400 text-xs">Copy Link</p>
-                    </>
-                  )}
-                </div>
-              </div>
+              <hr className="w-1/6 h-0.5 border-none bg-gray-300" />
             </div>
             <hr className="w-1/6 h-0.5 border-none bg-gray-300" /> */}
           </div>
@@ -190,10 +200,10 @@ const TweetsList = React.memo(({ data }) => {
       <br />
       <a
         target="_blank"
-        href="https://twitter.com/arn4v"
+        href="https://twitter.com/covid_army"
         className="text-blue-600"
       >
-        @arn4v
+        @covid_army
       </a>
     </div>
   )
