@@ -112,7 +112,7 @@ export const getStaticProps = async (ctx) => {
           ? camelize(slug[1])
           : null,
     },
-    revalidate: 120,
+    revalidate: 180,
   }
 }
 
