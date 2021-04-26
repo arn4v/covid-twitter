@@ -7,6 +7,7 @@ import NextGA from "~/components/NextGA"
 import "react-static-tweets/styles.css"
 import Head from "next/head"
 import NextClarity from "~/components/NextClarity"
+import '../styles/team.css'
 
 function App({ Component, pageProps }) {
   return (

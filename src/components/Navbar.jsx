@@ -1,5 +1,8 @@
 import { Disclosure } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
+import Link from "next/link"
+import Team  from "~/components/Team"
+
 
 const navigation = ["Home", "Share", "How it Works", "Contact Us"]
 
@@ -121,7 +124,32 @@ export default function Navbar() {
           </div>
           <Disclosure.Panel className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              {navigation.map((item, itemIdx) => (
+                <a
+                  href="#"
+                  className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  Home
+                </a>
+                <a
+                  href="#"
+                  className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  Share
+                </a>
+                <a
+                  href="#"
+                  className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  How it works
+                </a>
+                <a
+                  href="/team"
+                  className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
+                >
+                  <Link href='/team'>{Team}</Link>
+                  Team
+                </a>
+              {/* {navigation.map((item, itemIdx) => (
                 <a
                   key={item}
                   href="#"
@@ -129,7 +157,7 @@ export default function Navbar() {
                 >
                   {item}
                 </a>
-              ))}
+              ))} */}
             </div>
           </Disclosure.Panel>
         </>

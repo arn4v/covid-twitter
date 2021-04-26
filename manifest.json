@@ -1,0 +1,29 @@
+{
+    "short_name": "Covid.army",
+    "name": "Covid.army",
+    "theme_color": "#4f46ef",
+    "background_color": "#fffff",
+    "display": "standalone",
+    "icons": [{
+            "src": "assets/icons/launcher-icon-1x.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "assets/icons/launcher-icon-2x.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "assets/icons/launcher-icon-3x.png",
+            "type": "image/png",
+            "sizes": "144x144"
+        },
+        {
+            "src": "assets/icons/launcher-icon-4x.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "start_url": "/?utm_source=launcher"
+}
