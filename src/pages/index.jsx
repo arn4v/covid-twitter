@@ -36,20 +36,17 @@ export const getStaticProps = async () => {
   const TweetModel = require("../schemas/tweet")
   const cities = Object.keys(require("seeds/cities.json"))
   const resources = Object.keys(require("seeds/resources.json"))
-
-  if (!global.isScraped && process.env.NODE_ENV === "production") {
-    await scrape()
-    //global.isScraped = true
-  }
-
-  /* if (!global.tweets) */ global.tweets = await TweetModel.find({})
+  const fs = require("fs")
+  
   /** @type {Object[]} */
-  let tweets = global.tweets
+  let tweets = await TweetModel.find({}) 
 
   tweets = tweets.map((item) => {
     const { _id, __v, createdAt, updatedAt, ...doc } = item._doc
     return doc
   })
+
+  fs.writeFileSync("tweets.json", JSON.stringify(tweets))
 
   return {
     props: {
